@@ -23,6 +23,17 @@
         regexp: '<VirtualHost \*:.*>'
         line: '<VirtualHost *:8084>'
 
+    - name: Remove old custom index file if it exists
+      ansible.builtin.file:
+        path: /var/www/html/index.html
+        state: absent
+
+    - name: Deploy the default Apache landing page layout
+      ansible.builtin.copy:
+        src: /usr/share/apache2/default-site/index.html
+        dest: /var/www/html/index.html
+        remote_src: true
+
     - name: Start apache2 service
       ansible.builtin.service:
         name: apache2
